@@ -86,4 +86,14 @@ public class LeadRepositoryAdapter implements LeadRepositoryPort {
         return repository.findById(id)
                 .map(this::mapToDomain);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return repository.existsById(id);
+    }
 }

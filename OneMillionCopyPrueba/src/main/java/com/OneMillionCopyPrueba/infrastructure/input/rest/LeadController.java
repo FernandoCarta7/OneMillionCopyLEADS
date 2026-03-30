@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.OneMillionCopyPrueba.domain.model.Fuente;
 import com.OneMillionCopyPrueba.domain.model.Lead;
 import com.OneMillionCopyPrueba.domain.port.in.CreateLeadUseCase;
+import com.OneMillionCopyPrueba.domain.port.in.DeleteLeadUseCase;
 import com.OneMillionCopyPrueba.domain.port.in.GetLeadByIdUseCase;
 import com.OneMillionCopyPrueba.domain.port.in.GetLeadsUseCase;
 
@@ -21,12 +22,14 @@ public class LeadController {
     private final CreateLeadUseCase useCase;
     private final GetLeadsUseCase useCaseGet;
     private final GetLeadByIdUseCase getLeadByIdUseCase;
+    private final DeleteLeadUseCase deleteLeadUseCase;
 
     public LeadController(CreateLeadUseCase useCase,
-            GetLeadsUseCase useCaseGet, GetLeadByIdUseCase getLeadByIdUseCase) {
+            GetLeadsUseCase useCaseGet, GetLeadByIdUseCase getLeadByIdUseCase, DeleteLeadUseCase deleteLeadUseCase) {
         this.useCase = useCase;
         this.useCaseGet = useCaseGet;
         this.getLeadByIdUseCase = getLeadByIdUseCase;
+        this.deleteLeadUseCase = deleteLeadUseCase;
     }
 
     @PostMapping
@@ -52,5 +55,11 @@ public class LeadController {
     @GetMapping("/{id}")
     public Lead getById(@PathVariable Long id) {
         return getLeadByIdUseCase.getById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        deleteLeadUseCase.delete(id);
     }
 }
