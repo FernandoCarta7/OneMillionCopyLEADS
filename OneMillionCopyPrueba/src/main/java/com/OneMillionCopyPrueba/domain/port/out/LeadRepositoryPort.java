@@ -1,6 +1,7 @@
 package com.OneMillionCopyPrueba.domain.port.out;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
@@ -17,4 +18,5 @@ public interface LeadRepositoryPort {
         LocalDateTime fecha_creacion_inicio,
         LocalDateTime fecha_creacion_fin
     );
+    Optional<Lead> findById(Long id);
 }

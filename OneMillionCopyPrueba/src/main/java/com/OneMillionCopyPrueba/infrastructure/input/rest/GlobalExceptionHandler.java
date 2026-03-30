@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.OneMillionCopyPrueba.domain.exception.DuplicateEmailException;
+import com.OneMillionCopyPrueba.domain.exception.LeadNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -56,6 +57,14 @@ public class GlobalExceptionHandler {
         return Map.of(
                 "error", "VALIDATION_ERROR",
                 "messages", errores);
+    }
+
+    @ExceptionHandler(LeadNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleNotFound(LeadNotFoundException ex) {
+        return Map.of(
+                "error", "NOT_FOUND",
+                "message", ex.getMessage());
     }
 
 }

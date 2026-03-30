@@ -2,6 +2,7 @@ package com.OneMillionCopyPrueba.infrastructure.output.persistence.adapter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
@@ -62,8 +63,7 @@ public class LeadRepositoryAdapter implements LeadRepositoryPort {
         Pageable pageable = PageRequest.of(
                 page,
                 limit,
-                Sort.by("fechaCreacion").descending()
-        );
+                Sort.by("fechaCreacion").descending());
 
         Specification<LeadEntity> spec = (root, query, cb) -> cb.conjunction();
 
@@ -72,11 +72,18 @@ public class LeadRepositoryAdapter implements LeadRepositoryPort {
         }
 
         if (fecha_creacion_inicio != null && fecha_creacion_fin != null) {
-            spec = spec.and((root, query, cb) -> cb.between(root.get("fechaCreacion"), fecha_creacion_inicio, fecha_creacion_fin));
+            spec = spec.and((root, query, cb) -> cb.between(root.get("fechaCreacion"), fecha_creacion_inicio,
+                    fecha_creacion_fin));
         }
 
         Page<LeadEntity> result = repository.findAll(spec, pageable);
 
         return result.map(this::mapToDomain);
+    }
+
+    @Override
+    public Optional<Lead> findById(Long id) {
+        return repository.findById(id)
+                .map(this::mapToDomain);
     }
 }

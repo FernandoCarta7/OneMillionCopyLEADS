@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.OneMillionCopyPrueba.domain.model.Fuente;
 import com.OneMillionCopyPrueba.domain.model.Lead;
 import com.OneMillionCopyPrueba.domain.port.in.CreateLeadUseCase;
+import com.OneMillionCopyPrueba.domain.port.in.GetLeadByIdUseCase;
 import com.OneMillionCopyPrueba.domain.port.in.GetLeadsUseCase;
 
 import jakarta.validation.Valid;
@@ -19,12 +20,13 @@ import jakarta.validation.Valid;
 public class LeadController {
     private final CreateLeadUseCase useCase;
     private final GetLeadsUseCase useCaseGet;
+    private final GetLeadByIdUseCase getLeadByIdUseCase;
 
     public LeadController(CreateLeadUseCase useCase,
-        GetLeadsUseCase useCaseGet
-    ) {
+            GetLeadsUseCase useCaseGet, GetLeadByIdUseCase getLeadByIdUseCase) {
         this.useCase = useCase;
         this.useCaseGet = useCaseGet;
+        this.getLeadByIdUseCase = getLeadByIdUseCase;
     }
 
     @PostMapping
@@ -45,5 +47,10 @@ public class LeadController {
 
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fecha_creacion_fin) {
         return useCaseGet.getLeads(page, limit, fuente, fecha_creacion_inicio, fecha_creacion_fin);
+    }
+
+    @GetMapping("/{id}")
+    public Lead getById(@PathVariable Long id) {
+        return getLeadByIdUseCase.getById(id);
     }
 }
