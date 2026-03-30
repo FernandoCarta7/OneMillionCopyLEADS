@@ -24,6 +24,7 @@ public class LeadEntity {
     private Fuente fuente;
     private String productoInteres;
     private Double presupuesto;
-    private LocalDate fecha_creacion;
+    @Column(name = "fecha_creacion")
+    private LocalDate fechaCreacion;
 
 }
